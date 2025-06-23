@@ -1,34 +1,54 @@
-import { useState } from 'react'
-import reactLogo from './assets/react.svg'
-import viteLogo from '/vite.svg'
 import './App.css'
+import { Layout, Row, Col, Button, Carousel} from 'antd'
+import {
+  ShoppingCartOutlined,
+  ShopOutlined
+} from '@ant-design/icons';
+const { Header, Content, Footer} = Layout
 
 function App() {
-  const [count, setCount] = useState(0)
-
   return (
-    <>
-      <div>
-        <a href="https://vite.dev" target="_blank">
-          <img src={viteLogo} className="logo" alt="Vite logo" />
-        </a>
-        <a href="https://react.dev" target="_blank">
-          <img src={reactLogo} className="logo react" alt="React logo" />
-        </a>
-      </div>
-      <h1>Vite + React</h1>
-      <div className="card">
-        <button onClick={() => setCount((count) => count + 1)}>
-          count is {count}
-        </button>
-        <p>
-          Edit <code>src/App.tsx</code> and save to test HMR
-        </p>
-      </div>
-      <p className="read-the-docs">
-        Click on the Vite and React logos to learn more
-      </p>
-    </>
+    <Layout className="layout">
+      <Header className="header">
+        <div className="container">
+          <Row style={{ width: '100%', height: '100%' }}>
+            <Col span={2} className='col'>
+              <Button style={{ color: 'white', fontSize: '20px', border: 'none', background: 'transparent' }}>UStore</Button>
+            </Col>
+            <Col span={2} className='col' style={{alignItems: 'center', display: 'flex', justifyContent: 'center'}}>
+              <ShopOutlined style={{color: 'white', fontSize: '30px'}}/>
+            </Col>
+            <Col span={4} className='col'></Col>
+            <Col span={4} className='col'></Col>
+            <Col span={4} className='col'>
+              <Button style={{ color: 'white', fontSize: '20px', border: 'none', background: 'transparent' }}>Избранное</Button>
+            </Col>
+            <Col span={3} className='col' style={{alignItems: 'center', display: 'flex', justifyContent: 'center'}}>
+              <Button style={{border: 'none', background: 'transparent'}}><ShoppingCartOutlined style={{color: 'white', fontSize: '30px'}}/></Button>
+            </Col>
+            <Col span={5} className='col'>
+             <Button type="primary">Log In</Button>
+             <Button style={{color: 'white'}} >Sign In</Button>
+            </Col>
+          </Row>
+        </div>
+      </Header>
+      <Content className="content">
+        <section className='sect'>
+          <div className="container">
+            <Carousel autoplay={{ dotDuration: true }} autoplaySpeed={2100}>
+              <div className="carousel-item carousel-item-1">
+              </div>
+              <div className="carousel-item carousel-item-2">
+              </div>
+              <div className="carousel-item carousel-item-3">
+              </div>
+            </Carousel>
+          </div>
+        </section>
+      </Content>
+      <Footer className="footer"></Footer>
+    </Layout>
   )
 }
 
