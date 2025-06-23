@@ -34,20 +34,20 @@ function App() {
         </div>
       </Header>
       <Content className="content">
-        <section className='sect'>
-          <div className="container">
-            <Carousel autoplay={{ dotDuration: true }} autoplaySpeed={2100}>
-              <div className="carousel-item carousel-item-1">
-              </div>
-              <div className="carousel-item carousel-item-2">
-              </div>
-              <div className="carousel-item carousel-item-3">
-              </div>
-            </Carousel>
-          </div>
+        <section>
+          <Carousel autoplay>
+            <div className="carousel-item">
+              <img style={{width: '100%', height: '100%'}} src="https://images.unsplash.com/photo-1506744038136-46273834b3fb" alt="" />
+            </div>
+            <div className="carousel-item">
+              <img style={{width: '100%', height: '100%'}} src="https://images.unsplash.com/photo-1519125323398-675f0ddb6308" alt="" />
+            </div>
+            <div className="carousel-item">
+              <img style={{width: '100%', height: '100%'}} src="https://images.unsplash.com/photo-1464983953574-0892a716854b" alt="" />
+            </div>
+          </Carousel>
         </section>
       </Content>
-      <Footer className="footer"></Footer>
     </Layout>
   )
 }
