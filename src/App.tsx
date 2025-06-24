@@ -76,7 +76,7 @@ function App() {
             <Input.Password />
           </Form.Item>
           <Form.Item>
-            <Button type="primary" htmlType="submit" block>Войти</Button>
+            <Button type="primary" htmlType="submit" onClick={handleCancel} block>Войти</Button>
           </Form.Item>
         </Form>
       </Modal>
@@ -93,7 +93,7 @@ function App() {
             <Input.Password />
           </Form.Item>
           <Form.Item>
-            <Button type="primary" htmlType="submit" block>Зарегистрироваться</Button>
+            <Button type="primary" htmlType="submit" onClick={handleCancel} block>Зарегистрироваться</Button>
           </Form.Item>
         </Form>
       </Modal>
