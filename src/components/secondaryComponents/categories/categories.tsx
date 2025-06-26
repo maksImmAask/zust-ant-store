@@ -13,10 +13,17 @@ function Categories() {
   const [loading, setLoading] = useState(true);
 
   useEffect(() => {
-    api.get('/categories')
-      .then(res => setCategories(res.data))
-      .catch(error => console.error('Ошибка при загрузке категорий:', error))
-      .finally(() => setLoading(false));
+    const fetchCategories = async () => {
+      try {
+        const res = await api.get('/categories');
+        setCategories(res.data as Category[]);
+      } catch (error) {
+        console.error('Ошибка при загрузке категорий:', error);
+      } finally {
+        setLoading(false);
+      }
+    };
+    fetchCategories();
   }, []);
 
   if (loading) return <Spin />;
