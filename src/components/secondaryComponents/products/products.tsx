@@ -14,10 +14,12 @@ type Product = {
   thumbnail: string;
 };
 
+
 const PAGE_SIZE = 4;
 
 function Products() {
   const { ref, inView } = useInView();
+
   const {
     data,
     fetchNextPage,
@@ -27,7 +29,9 @@ function Products() {
   } = useInfiniteQuery({
     queryKey: ['products'],
     queryFn: ({ pageParam = 0 }) =>
-      api.get(`?limit=${PAGE_SIZE}&skip=${pageParam * PAGE_SIZE}`).then(res => res.data),
+      api
+        .get(`?limit=${PAGE_SIZE}&skip=${pageParam * PAGE_SIZE}`)
+        .then((res) => res.data),
     getNextPageParam: (lastPage, allPages) => {
       const loaded = allPages.length * PAGE_SIZE;
       return loaded < lastPage.total ? allPages.length : undefined;
@@ -43,7 +47,7 @@ function Products() {
 
   if (isLoading) return <div>Загрузка...</div>;
 
-  const products: Product[] = data?.pages.flatMap(page => page.products) ?? [];
+  const products: Product[] = data?.pages.flatMap((page) => page.products) ?? [];
 
   return (
     <section style={{ padding: '10px' }}>

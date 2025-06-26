@@ -15,7 +15,7 @@ function Categories() {
   useEffect(() => {
     api.get('/categories')
       .then(res => setCategories(res.data))
-      .catch(err => console.error('Ошибка при загрузке категорий:', err))
+      .catch(error => console.error('Ошибка при загрузке категорий:', error))
       .finally(() => setLoading(false));
   }, []);
 
