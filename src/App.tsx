@@ -1,8 +1,8 @@
 import './App.css'
 import { Layout } from 'antd'
-import Categories from './components/secondaryComponents/categories/categories';
-import Header from './components/mainComponents/header/header';
-import Products from './components/secondaryComponents/products/products';
+import Categories from '@components/categories/categories';
+import Header from '@components/header/header';
+import Products from '@components/products/products';
 const { Content } = Layout
 
 function App() {
