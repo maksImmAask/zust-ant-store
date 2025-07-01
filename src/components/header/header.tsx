@@ -26,7 +26,7 @@ function Header() {
       <div className="container">
         <Row style={{ width: '100%', height: '100%' }}>
           <Col span={2} className={styles.col}>
-            <Button onClick={openNotification} style={{ color: 'white', fontSize: '20px', border: 'none', background: 'transparent' }}>UStore</Button>
+            <Button onClick={openNotification} className={styles.button}>UStore</Button>
           </Col>
           <Col span={2} className={styles.col} style={{ alignItems: 'center', display: 'flex', justifyContent: 'center' }}>
             <ShopOutlined style={{ color: 'white', fontSize: '30px' }} />
@@ -35,15 +35,15 @@ function Header() {
             <SearchInput />
           </Col>
           <Col span={5} className={styles.col}>
-            <Button onClick={openNotification} style={{ color: 'white', fontSize: '20px', border: 'none', background: 'transparent' }}>Избранное<HeartOutlined style={{ color: 'white', fontSize: '30px', marginLeft: '10px' }} /></Button>
+            <Button type='primary' className={styles.btn} icon={<HeartOutlined />} onClick={openNotification} >Избранное</Button>
           </Col>
-          <Col span={2} className={styles.col} style={{ alignItems: 'center', display: 'flex', justifyContent: 'center' }}>
+          <Col span={2} className={styles.col}>
             {contextHolder}
-            <Button onClick={openNotification} style={{ color: 'white', fontSize: '20px', border: 'none', background: 'transparent' }}>Корзина<ShoppingCartOutlined style={{ color: 'white', fontSize: '30px' }} /></Button>
+            <Button type='primary' icon={<ShoppingCartOutlined />} onClick={openNotification} className={styles.btn}>Корзина</Button>
           </Col>
           <Col span={5} className={styles.col}>
-            <Button style={{ background: 'transparent' }} onClick={showLoginModal} type="primary">Log In</Button>
-            <Button style={{ background: 'transparent', color: 'white' }} onClick={showSignInModal}>Sign In</Button>
+            <Button className={styles.sign} onClick={showLoginModal} type="primary">Log In</Button>
+            <Button className={styles.sign} type='primary' onClick={showSignInModal}>Sign In</Button>
           </Col>
         </Row>
         <AuthModals
