@@ -1,35 +1,18 @@
-import { Tabs, Skeleton } from 'antd';
-import { useEffect, useState } from 'react';
-import api from '../../api/api';
-import { useCategoryStore } from '../../store';
+import { Menu, Skeleton } from 'antd';
+import { useEffect } from 'react';
+import { useCategoryStore } from '@store/storeCategories';
 
-type Category = {
-  slug: string;
-  name: string;
-  url: string;
+type CategoriesProps = {
+  selectedCategory: string | null;
+  onCategorySelect: (slug: string | null) => void;
 };
 
-
-function Categories() {
-  const { categories, setCategories } = useCategoryStore();
-  const [loading, setLoading] = useState(true);
-  
+function Categories({ selectedCategory, onCategorySelect }: CategoriesProps) {
+  const { categories, loading, getCategories } = useCategoryStore();
 
   useEffect(() => {
-    const Categories = async () => {
-      try {
-        const res = await api.get('/categories');
-        console.log('Категории:', res.data);
-        setCategories(res.data as Category[]);
-      } catch (error) {
-        console.error('Ошибка при загрузке категорий:', error);
-      } finally {
-        setLoading(false);
-      }
-    };
-    if (categories.length === 0) Categories();
-    else setLoading(false);
-  }, [categories.length, setCategories]);
+    if (categories.length === 0) getCategories();
+  }, [categories.length, getCategories]);
 
   if (loading) {
     return (
@@ -43,24 +26,18 @@ function Categories() {
 
   return (
     <section style={{ padding: '10px' }}>
-      <style>
-        {`
-          .ant-tabs-nav-more {
-            display: none !important;
-          }
-        `}
-      </style>
       <div className="container">
         <h2 className="categories-title">Категории</h2>
-        <Tabs
-          tabPosition="top"
-          type="line"
-          items={categories.map(category => ({
-            key: category.slug,
-            label: category.name,
-            children: null,
-          }))}
-        />
+        <Menu
+          mode="horizontal"
+          selectable
+          selectedKeys={selectedCategory ? [selectedCategory] : []}
+          onClick={e => onCategorySelect(e.key === selectedCategory ? null : e.key)}
+        >
+          {categories.map(category => (
+            <Menu.Item key={category.slug}>{category.name}</Menu.Item>
+          ))}
+        </Menu>
       </div>
     </section>
   );
