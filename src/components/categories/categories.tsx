@@ -1,6 +1,6 @@
 import { Menu, Skeleton } from 'antd';
 import { useEffect } from 'react';
-import { useCategoryStore } from '@store/storeCategories';
+import { useCategoryStore } from '@store/useCategoryStore';
 
 type CategoriesProps = {
   selectedCategory: string | null;

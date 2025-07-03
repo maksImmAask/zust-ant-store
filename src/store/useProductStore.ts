@@ -5,12 +5,16 @@ import type { Product } from '../types'
 type ProductState = {
   products: Product[]
   loading: boolean
+  search: string
+  setSearch: (value: string) => void
   getProducts: () => Promise<void>
 }
 
 export const useProductStore = create<ProductState>((set) => ({
   products: [],
   loading: false,
+  search: '',
+  setSearch: (value) => set({ search: value }),
   getProducts: async () => {
     set({ loading: true })
     try {

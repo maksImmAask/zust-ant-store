@@ -1,3 +1,6 @@
 export const ROUTES = {
-  HOME: "/"
+  HOME: "/",
+  FAVOURITES: "/favourites",
+  CART: "/cart",
+  path: "*"
 };

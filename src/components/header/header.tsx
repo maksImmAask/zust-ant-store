@@ -4,8 +4,10 @@ import { ShoppingCartOutlined, ShopOutlined, HeartOutlined } from '@ant-design/i
 import styles from './header.module.css';
 import SearchInput from '../searchInput/search';
 import AuthModals from '../modal/modal';
+import { useNavigate } from 'react-router-dom';
 
 function Header() {
+  const navigate = useNavigate();
   const [modalType, setModalType] = useState<"login" | "signin" | null>(null);
   const [api, contextHolder] = notification.useNotification();
 
@@ -26,7 +28,7 @@ function Header() {
       <div className="container">
         <Row style={{ width: '100%', height: '100%' }}>
           <Col span={2} className={styles.col}>
-            <Button onClick={openNotification} className={styles.button}>UStore</Button>
+            <Button  onClick={openNotification} className={styles.button}>UStore</Button>
           </Col>
           <Col span={2} className={styles.col} style={{ alignItems: 'center', display: 'flex', justifyContent: 'center' }}>
             <ShopOutlined style={{ color: 'white', fontSize: '30px' }} />
@@ -35,11 +37,11 @@ function Header() {
             <SearchInput />
           </Col>
           <Col span={5} className={styles.col}>
-            <Button type='primary' className={styles.btn} icon={<HeartOutlined />} onClick={openNotification} >Избранное</Button>
+            <Button type='primary' className={styles.btn} icon={<HeartOutlined />} onClick={() => navigate('/favourites')} >Избранное</Button>
           </Col>
           <Col span={2} className={styles.col}>
             {contextHolder}
-            <Button type='primary' icon={<ShoppingCartOutlined />} onClick={openNotification} className={styles.btn}>Корзина</Button>
+            <Button type='primary' icon={<ShoppingCartOutlined />} onClick={() => navigate('/cart')} className={styles.btn}>Корзина</Button>
           </Col>
           <Col span={5} className={styles.col}>
             <Button className={styles.sign} onClick={showLoginModal} type="primary">Log In</Button>
