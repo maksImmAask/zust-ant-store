@@ -1,6 +1,7 @@
 import { Card, Row, Col, Skeleton, Button, Image } from 'antd';
 import { HeartOutlined, HeartFilled } from '@ant-design/icons';
 import { useEffect, useState } from 'react';
+import { useNavigate } from 'react-router-dom';
 import styles from './products.module.css';
 import { useProductStore } from '@store/useProductStore';
 import { useCategoryStore } from '@store/useCategoryStore';
@@ -18,6 +19,7 @@ function Products({ selectedCategory }: ProductsProps) {
   const { addToCart } = useCartStore();
 
   const [openedCategories, setOpenedCategories] = useState<string[]>([]);
+  const navigate = useNavigate();
 
   useEffect(() => {
     if (products.length === 0) getProducts();
@@ -34,18 +36,20 @@ function Products({ selectedCategory }: ProductsProps) {
         <div className="container">
           <h2 className={styles.products_title}>Продукты</h2>
           <Row gutter={[16, 16]}>
-            {Array.from({ length: skeletonCount }).map((_, idx) => (
-              <Col span={6} key={idx} style={{ padding: '10px' }}>
-                <Card
-                  hoverable
-                  cover={<Skeleton.Image style={{ width: '100%', height: 180 }} active />}
-                  title={<Skeleton.Input style={{ width: 120 }} active size="small" />}
-                  style={{ width: '100%', height: '100%' }}
-                >
-                  <Skeleton active paragraph={{ rows: 2 }} title={false} />
-                </Card>
-              </Col>
-            ))}
+            {Array.from({ length: skeletonCount }).map((_, idx) => {
+              return (
+                <Col span={6} key={idx} style={{ padding: '10px' }}>
+                  <Card
+                    hoverable
+                    cover={<Skeleton.Image style={{ width: '100%', height: 180 }} active />}
+                    title={<Skeleton.Input style={{ width: 120 }} active size="small" />}
+                    style={{ width: '100%', height: '100%' }}
+                  >
+                    <Skeleton active paragraph={{ rows: 2 }} title={false} />
+                  </Card>
+                </Col>
+              );
+            })}
           </Row>
         </div>
       </section>
@@ -66,6 +70,7 @@ function Products({ selectedCategory }: ProductsProps) {
                 <Col span={6} key={product.id} style={{ padding: '10px' }}>
                   <Card
                     hoverable
+                    onClick={() => navigate(`/product/${product.id}`)}
                     cover={
                       <Image
                         src={product.thumbnail}
@@ -85,7 +90,10 @@ function Products({ selectedCategory }: ProductsProps) {
                               : <HeartOutlined style={{ color: '#ff4d4f', fontSize: 18 }} />
                           }
                           style={{ marginLeft: 8 }}
-                          onClick={() => isFav ? removeFavorite(product.id) : addFavorite(product)}
+                          onClick={e => {
+                            e.stopPropagation();
+                            isFav ? removeFavorite(product.id) : addFavorite(product);
+                          }}
                         />
                       </div>
                     }
@@ -94,7 +102,16 @@ function Products({ selectedCategory }: ProductsProps) {
                   >
                     <div className={styles.produst_price}>Цена<h1 className={styles.title}>{product.price}$</h1></div>
                     <div className={styles.product_description}>{product.description}</div>
-                    <Button onClick={() => addToCart(product)} style={{ width: '100%', margin: '3px' }} type='primary'>В Корзину</Button>
+                    <Button
+                      onClick={e => {
+                        e.stopPropagation();
+                        addToCart(product);
+                      }}
+                      style={{ width: '100%', margin: '3px' }}
+                      type='primary'
+                    >
+                      В Корзину
+                    </Button>
                   </Card>
                 </Col>
               );
@@ -126,6 +143,7 @@ function Products({ selectedCategory }: ProductsProps) {
                     <Col span={6} key={product.id} style={{ padding: '10px' }}>
                       <Card
                         hoverable
+                        onClick={() => navigate(`/product/${product.id}`)}
                         cover={
                           <Image
                             src={product.thumbnail}
@@ -145,7 +163,10 @@ function Products({ selectedCategory }: ProductsProps) {
                                   : <HeartOutlined style={{ color: '#ff4d4f', fontSize: 18 }} />
                               }
                               style={{ marginLeft: 8 }}
-                              onClick={() => isFav ? removeFavorite(product.id) : addFavorite(product)}
+                              onClick={e => {
+                                e.stopPropagation();
+                                isFav ? removeFavorite(product.id) : addFavorite(product);
+                              }}
                             />
                           </div>
                         }
@@ -154,7 +175,16 @@ function Products({ selectedCategory }: ProductsProps) {
                       >
                         <div className={styles.produst_price}>Цена<h1 className={styles.title}>{product.price}$</h1></div>
                         <div className={styles.product_description}>{product.description}</div>
-                        <Button onClick={() => addToCart(product)} style={{ width: '100%', margin: '3px' }} type='primary'>В Корзину</Button>
+                        <Button
+                          onClick={e => {
+                            e.stopPropagation();
+                            addToCart(product);
+                          }}
+                          style={{ width: '100%', margin: '3px' }}
+                          type='primary'
+                        >
+                          В Корзину
+                        </Button>
                       </Card>
                     </Col>
                   );

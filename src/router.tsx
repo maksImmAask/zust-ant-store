@@ -4,6 +4,7 @@ import { Spin } from "antd";
 import { ROUTES } from "./routes/routes";
 import FavouritesPage from './pages/favPage';
 import CartPage from './pages/cartPage';
+import ProductPage from "./pages/productPage";
 import NotFoundPage from './pages/nfoundPage';
 
 const HomePage = lazy(() => import('./pages/homePage'));
@@ -37,6 +38,10 @@ export const Router = createBrowserRouter([
       {
         path: ROUTES.FAVOURITES,
         element: sSuspense(<FavouritesPage />),
+      },
+      {
+        path: ROUTES.PRODUCT,
+        element: sSuspense(<ProductPage />),
       },
       {
         path: '*',
