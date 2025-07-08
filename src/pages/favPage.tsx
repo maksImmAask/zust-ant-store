@@ -6,7 +6,6 @@ import { useNavigate } from 'react-router-dom';
 function FavPage() {
   const { favorites, removeFavorite } = useFavoritesStore();
   const navigate = useNavigate();
-
   return (
     <section style={{ padding: '10px' }}>
       <div className="container">

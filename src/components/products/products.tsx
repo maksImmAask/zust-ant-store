@@ -1,4 +1,4 @@
-import { Card, Row, Col, Skeleton, Button, Image } from 'antd';
+import { Card, Row, Col, Skeleton, Button, Image, Empty, notification } from 'antd';
 import { HeartOutlined, HeartFilled } from '@ant-design/icons';
 import { useEffect, useState } from 'react';
 import { useNavigate } from 'react-router-dom';
@@ -29,7 +29,13 @@ function Products({ selectedCategory }: ProductsProps) {
   const filteredProducts = products.filter(product =>
     product.title.toLowerCase().includes(search.toLowerCase())
   );
-
+  if (!loading && filteredProducts.length === 0) {
+    return (
+      <div style={{ padding: 40 }}>
+        <Empty description="Продуктов с таким названием не найдено" />
+      </div>
+    );
+  }
   if (loading) {
     return (
       <section style={{ padding: '10px' }}>
@@ -92,7 +98,19 @@ function Products({ selectedCategory }: ProductsProps) {
                           style={{ marginLeft: 8 }}
                           onClick={e => {
                             e.stopPropagation();
-                            isFav ? removeFavorite(product.id) : addFavorite(product);
+                            if (isFav) {
+                              removeFavorite(product.id);
+                              notification.success({
+                                message: 'Удалено из избранного',
+                                placement: 'topRight',
+                              });
+                            } else {
+                              addFavorite(product);
+                              notification.success({
+                                message: 'Добавлено в избранное',
+                                placement: 'topRight',
+                              });
+                            }
                           }}
                         />
                       </div>
@@ -106,6 +124,10 @@ function Products({ selectedCategory }: ProductsProps) {
                       onClick={e => {
                         e.stopPropagation();
                         addToCart(product);
+                        notification.success({
+                          message: 'Добавлено в корзину',
+                          placement: 'topRight',
+                        });
                       }}
                       style={{ width: '100%', margin: '3px' }}
                       type='primary'
@@ -165,7 +187,19 @@ function Products({ selectedCategory }: ProductsProps) {
                               style={{ marginLeft: 8 }}
                               onClick={e => {
                                 e.stopPropagation();
-                                isFav ? removeFavorite(product.id) : addFavorite(product);
+                                if (isFav) {
+                                  removeFavorite(product.id);
+                                  notification.success({
+                                    message: 'Удалено из избранного',
+                                    placement: 'topRight',
+                                  });
+                                } else {
+                                  addFavorite(product);
+                                  notification.success({
+                                    message: 'Добавлено в избранное',
+                                    placement: 'topRight',
+                                  });
+                                }
                               }}
                             />
                           </div>
@@ -179,6 +213,10 @@ function Products({ selectedCategory }: ProductsProps) {
                           onClick={e => {
                             e.stopPropagation();
                             addToCart(product);
+                            notification.success({
+                              message: 'Добавлено в корзину',
+                              placement: 'topRight',
+                            });
                           }}
                           style={{ width: '100%', margin: '3px' }}
                           type='primary'
