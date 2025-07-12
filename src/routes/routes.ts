@@ -3,5 +3,7 @@ export const ROUTES = {
   FAVOURITES: "/favourites",
   CART: "/cart",
   PRODUCT: "/product/:id",
+  LOGIN: "/login",
+  SIGNIN: "/signin",
   path: "*"
 };

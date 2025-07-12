@@ -1,5 +1,5 @@
 import { create } from 'zustand';
-import type { Product } from '../types';
+import type { Product } from '../types/types';
 
 export type CartItem = Product & { quantity: number };
 
@@ -9,9 +9,10 @@ type CartState = {
   removeFromCart: (id: number) => void;
   changeQuantity: (id: number, quantity: number) => void;
   clearCart: () => void;
+  getQuantity: (id: number) => number;
 };
 
-export const useCartStore = create<CartState>((set) => ({
+export const useCartStore = create<CartState>((set, get) => ({
   cart: [],
   addToCart: (product) =>
     set((state) => {
@@ -36,4 +37,8 @@ export const useCartStore = create<CartState>((set) => ({
       ),
     })),
   clearCart: () => set({ cart: [] }),
+  getQuantity: (id) => {
+    const item = get().cart.find((p) => p.id === id);
+    return item ? item.quantity : 0;
+  },
 }));

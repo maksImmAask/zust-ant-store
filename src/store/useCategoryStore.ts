@@ -1,6 +1,6 @@
 import { create } from 'zustand'
 import api from '@api/api'
-import type { Category } from '../types'
+import type { Category } from '../types/types'
 
 type CategoryState = {
   categories: Category[]
@@ -14,7 +14,7 @@ export const useCategoryStore = create<CategoryState>((set) => ({
   getCategories: async () => {
     set({ loading: true })
     try {
-      const res = await api.get('/categories')
+      const res = await api.get('/products/categories')
       set({ categories: res.data as Category[] })
     } finally {
       set({ loading: false })

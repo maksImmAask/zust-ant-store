@@ -2,13 +2,15 @@ import React, { lazy, Suspense } from "react";
 import { createBrowserRouter, RouterProvider } from "react-router-dom";
 import { Spin } from "antd";
 import { ROUTES } from "./routes/routes";
-import FavouritesPage from './pages/favPage';
-import CartPage from './pages/cartPage';
-import ProductPage from "./pages/productPage";
-import NotFoundPage from './pages/nfoundPage';
-
+const FavouritesPage = lazy(() => import('./pages/favPage'));
+const CartPage = lazy(() => import('./pages/cartPage'));
+const ProductPage = lazy(() => import('./pages/productPage'));
+const NotFoundPage = lazy(() => import('./pages/nfoundPage'));
 const HomePage = lazy(() => import('./pages/homePage'));
+const LoginPage = lazy(() => import('./pages/loginPage'));
+const SigninPage = lazy(() => import('./pages/signinPage'));
 const MainLayout = lazy(() => import('./layout/layout'));
+
 
 const sSuspense = (Component: React.ReactNode) => (
   <Suspense
@@ -43,6 +45,16 @@ export const Router = createBrowserRouter([
         path: ROUTES.PRODUCT,
         element: sSuspense(<ProductPage />),
       },
+      {
+        path: ROUTES.LOGIN,
+        element: sSuspense(<LoginPage />),
+      }
+      ,
+      {
+        path: ROUTES.SIGNIN,
+        element: sSuspense(<SigninPage />),
+      }
+      ,
       {
         path: '*',
         element: <NotFoundPage />,

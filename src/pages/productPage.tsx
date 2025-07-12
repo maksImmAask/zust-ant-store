@@ -1,5 +1,6 @@
 import { useParams, useNavigate } from 'react-router-dom';
 import { Card, Button, Image } from 'antd';
+import { PlusOutlined, MinusOutlined } from '@ant-design/icons';
 import { useProductStore } from '@store/useProductStore';
 import { useCartStore } from '@store/useCartStore';
 
@@ -7,8 +8,9 @@ function ProductPage() {
   const { id } = useParams();
   const navigate = useNavigate();
   const { products } = useProductStore();
-  const { addToCart } = useCartStore();
+  const { addToCart, changeQuantity, removeFromCart, getQuantity } = useCartStore();
   const product = products.find(p => String(p.id) === String(id));
+  const cartCount = product ? getQuantity(product.id) : 0;
 
   if (!product) {
     return (
@@ -48,9 +50,28 @@ function ProductPage() {
             Цена: <span style={{ color: '#1677ff' }}>{product.price}$</span>
           </div>
           <div style={{ marginBottom: 16, color: '#888' }}>{product.description}</div>
-          <Button type="primary" size="large" onClick={() => addToCart(product)}>
-            В корзину
-          </Button>
+          {cartCount === 0 ? (
+            <Button type="primary" size="large" onClick={() => addToCart(product)}>
+              В корзину
+            </Button>
+          ) : (
+            <div style={{ display: 'flex', alignItems: 'center', gap: 12 }}>
+              <Button
+                icon={<MinusOutlined />}
+                size="large"
+                onClick={() => {
+                  if (cartCount - 1 === 0) removeFromCart(product.id);
+                  else changeQuantity(product.id, cartCount - 1);
+                }}
+              />
+              <span style={{ minWidth: 32, textAlign: 'center', fontSize: 18 }}>{cartCount}</span>
+              <Button
+                icon={<PlusOutlined />}
+                size="large"
+                onClick={() => changeQuantity(product.id, cartCount + 1)}
+              />
+            </div>
+          )}
           <Button style={{ marginLeft: 16 }} onClick={() => navigate(-1)}>
             Назад
           </Button>

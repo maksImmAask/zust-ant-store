@@ -1,18 +1,21 @@
-import { useState } from 'react';
-import { Row, Col, Button } from 'antd';
-import { ShoppingCartOutlined, ShopOutlined, HeartOutlined } from '@ant-design/icons';
+import { Row, Col, Button, Avatar, Dropdown, Menu } from 'antd';
+import { ShoppingCartOutlined, ShopOutlined, HeartOutlined, UserOutlined } from '@ant-design/icons';
 import styles from './header.module.css';
 import SearchInput from '../searchInput/search';
-import AuthModals from '../modal/modal';
 import { useNavigate } from 'react-router-dom';
+import { useAuthStore } from '../../store/useLoginStore';
 
 function Header() {
   const navigate = useNavigate();
-  const [modalType, setModalType] = useState<"login" | "signin" | null>(null);
+  const { user, isAuthenticated, logout } = useAuthStore();
 
-  const showLoginModal = () => setModalType("login");
-  const showSignInModal = () => setModalType("signin");
-  const handleCancel = () => setModalType(null);
+  const menu = (
+    <Menu>
+      <Menu.Item key="logout" onClick={logout}>
+        Выйти
+      </Menu.Item>
+    </Menu>
+  );
 
   return (
     <header className={styles.header}>
@@ -33,15 +36,27 @@ function Header() {
           <Col span={2} className={styles.col}>
             <Button type='primary' icon={<ShoppingCartOutlined />} onClick={() => navigate('/cart')} className={styles.btn}>Корзина</Button>
           </Col>
-          <Col span={5} className={styles.col}>
-            <Button className={styles.sign} onClick={showLoginModal} type="primary">Log In</Button>
-            <Button className={styles.sign} type='primary' onClick={showSignInModal}>Sign In</Button>
+          <Col span={5} className={styles.col} style={{ display: 'flex', alignItems: 'center', gap: 12, justifyContent: 'flex-end' }}>
+            {isAuthenticated && user ? (
+              <>
+                <span style={{ color: '#fff', marginRight: 8 }}>{user.username}</span>
+                <Dropdown overlay={menu} placement="bottomRight" trigger={['click']}>
+                  <Avatar
+                    src={user.image}
+                    icon={<UserOutlined />}
+                    alt={user.username}
+                    style={{ cursor: 'pointer' }}
+                  />
+                </Dropdown>
+              </>
+            ) : (
+              <>
+                <Button className={styles.sign} onClick={() => navigate('/login')} type="primary">Log In</Button>
+                <Button className={styles.sign} onClick={() => navigate('/signin')} type='primary' >Sign In</Button>
+              </>
+            )}
           </Col>
         </Row>
-        <AuthModals
-          modalType={modalType}
-          onClose={handleCancel}
-        />
       </div>
     </header>
   );
