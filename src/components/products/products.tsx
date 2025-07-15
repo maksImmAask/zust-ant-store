@@ -25,7 +25,7 @@ function Products({ selectedCategory }: ProductsProps) {
     removeFromCart
   } = useCartStore();
 
-  const [openedCategories, setOpenedCategories] = useState<string[]>([]);
+  const [visibleCountByCategory, setVisibleCountByCategory] = useState<Record<string, number>>({});
   const navigate = useNavigate();
 
   useEffect(() => {
@@ -51,13 +51,13 @@ function Products({ selectedCategory }: ProductsProps) {
     return (
       <section style={{ padding: '10px' }}>
         <div className="container">
-          <h2 className={styles.products_title}>Продукты</h2>
+          <h2 className='title'>Продукты</h2>
           <Row gutter={[16, 16]}>
             {Array.from({ length: skeletonCount }).map((_, idx) => (
               <Col span={6} key={idx} style={{ padding: '10px' }}>
                 <Card
                   hoverable
-                  cover={<Skeleton.Image style={{ width: '100%', height: 180 }} active />}
+                  cover={<Skeleton.Image style={{ width: '100%', height: 300 }} active />}
                   title={<Skeleton.Input style={{ width: 120 }} active size="small" />}
                   style={{ width: '100%', height: '100%' }}
                 >
@@ -74,17 +74,17 @@ function Products({ selectedCategory }: ProductsProps) {
   return (
     <section style={{ padding: '10px' }}>
       <div className="container">
-        <h2 className={styles.products_title}>Продукты</h2>
+        <h2 className='title'>Продукты</h2>
         {categories.map(category => {
-          const isOpened = openedCategories.includes(category.slug);
           const allProds = filteredProducts.filter(product => product.category === category.slug);
-          const prods = isOpened ? allProds : allProds.slice(0, 4);
+          const visibleCount = visibleCountByCategory[category.slug] || 4;
+          const prods = allProds.slice(0, visibleCount);
 
           if (prods.length === 0) return null;
 
           return (
             <div key={category.slug} style={{ marginBottom: 32 }}>
-              <h3 className={styles.products_title}>{category.name}</h3>
+              <h3 className='title'>{category.name}</h3>
               <Row gutter={[16, 16]}>
                 {prods.map(product => {
                   const isFav = favorites.some(fav => fav.product.id === product.id);
@@ -100,6 +100,7 @@ function Products({ selectedCategory }: ProductsProps) {
                             src={product.thumbnail}
                             alt={product.title}
                             className={styles.product_image}
+                            preview={false}
                           />
                         }
                         title={
@@ -140,56 +141,69 @@ function Products({ selectedCategory }: ProductsProps) {
                           Цена<h1 className={styles.title}>{product.price}$</h1>
                         </div>
                         <div className={styles.product_description}>{product.description}</div>
-                        {cartCount === 0 ? (
-                        <Button
-                          onClick={e => {
-                            e.stopPropagation();
+<Button
+  type="primary"
+  style={{ width: '100%', margin: '3px' }}
+  onClick={e => {
+    e.stopPropagation();
 
-                            if (!isAuthenticated) {
-                              navigate('/login');
-                              return;
-                            }
+    if (!isAuthenticated) {
+      navigate('/login');
+      return;
+    }
 
-                            addToCart(product);
-                            notification.success({
-                              message: 'Добавлено в корзину',
-                              placement: 'topRight',
-                            });
-                          }}
-                          style={{ width: '100%', margin: '3px' }}
-                          type="primary"
-                        >
-                          В корзину
-                        </Button>
-                        ) : (
-                          <div style={{ display: 'flex', alignItems: 'center', justifyContent: 'center', gap: 8 }}>
-                            <Button
-                              icon={<MinusOutlined />}
-                              onClick={e => {
-                                e.stopPropagation();
-                                changeQuantity(product.id, cartCount - 1);
-                                if (cartCount - 1 === 0) removeFromCart(product.id);
-                              }}
-                            />
-                            <span style={{ minWidth: 24, textAlign: 'center' }}>{cartCount}</span>
-                            <Button
-                              icon={<PlusOutlined />}
-                              onClick={e => {
-                                e.stopPropagation();
-                                changeQuantity(product.id, cartCount + 1);
-                              }}
-                            />
-                          </div>
-                        )}
+    if (cartCount === 0) {
+      addToCart(product);
+      notification.success({
+        message: 'Добавлено в корзину',
+        placement: 'topRight',
+      });
+    }
+  }}
+>
+  {cartCount === 0 ? (
+    'В корзину'
+  ) : (
+    <div style={{ display: 'flex', alignItems: 'center', justifyContent: 'center', gap: 8 }}>
+      <Button
+        icon={<MinusOutlined />}
+        size="small"
+        style={{ background: 'transparent', border: 'none', color: '#fff' }}
+        onClick={(e) => {
+          e.stopPropagation();
+          const newQty = cartCount - 1;
+          if (newQty === 0) removeFromCart(product.id);
+          else changeQuantity(product.id, newQty);
+        }}
+      />
+      <span >{cartCount}</span>
+      <Button
+        icon={<PlusOutlined />}
+        size="small"
+        style={{ background: 'transparent', border: 'none', color: '#fff' }}
+        onClick={(e) => {
+          e.stopPropagation();
+          changeQuantity(product.id, cartCount + 1);
+        }}
+      />
+    </div>
+  )}
+</Button>
+
                       </Card>
                     </Col>
                   );
                 })}
               </Row>
-              {!isOpened && allProds.length > 4 && (
+              {prods.length < allProds.length && (
                 <div style={{ textAlign: 'center', marginTop: 12 }}>
                   <button
-                    onClick={() => setOpenedCategories(prev => [...prev, category.slug])}
+                    onClick={() =>
+                      setVisibleCountByCategory(prev => ({
+                        ...prev,
+                        [category.slug]: (prev[category.slug] || 4) + 4,
+                      }))
+                    }
                     style={{
                       padding: '8px 24px',
                       borderRadius: 4,

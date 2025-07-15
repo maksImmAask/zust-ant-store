@@ -59,6 +59,10 @@ export const Router = createBrowserRouter([
         path: '*',
         element: <NotFoundPage />,
       },
+      {
+        path: ROUTES.CATEGORY,
+        element: sSuspense(<HomePage />),
+      }
     ],
   },
 ]);

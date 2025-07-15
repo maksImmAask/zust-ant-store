@@ -1,7 +1,7 @@
 import { Menu, Skeleton } from 'antd';
 import { useEffect } from 'react';
 import { useCategoryStore } from '@store/useCategoryStore';
-import  style from './categories.module.css';
+import  '../../global.css'
 
 type CategoriesProps = {
   selectedCategory: string | null;
@@ -28,7 +28,7 @@ function Categories({ selectedCategory, onCategorySelect }: CategoriesProps) {
   return (
     <section style={{ padding: '10px' }}>
       <div className="container">
-        <h2 className={style.category_title}>Категории</h2>
+        <h2 className='title'>Категории</h2>
         <Menu
           mode="horizontal"
           selectable

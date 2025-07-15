@@ -41,7 +41,7 @@ function ProductPage() {
             width={300}
             height={300}
             style={{ objectFit: 'contain', borderRadius: 12, background: '#f5f5f5' }}
-            preview
+            preview={false}
           />
         </div>
         <div style={{ flex: 1 }}>
@@ -50,29 +50,48 @@ function ProductPage() {
             Цена: <span style={{ color: '#1677ff' }}>{product.price}$</span>
           </div>
           <div style={{ marginBottom: 16, color: '#888' }}>{product.description}</div>
-          {cartCount === 0 ? (
-            <Button type="primary" size="large" onClick={() => addToCart(product)}>
-              В корзину
-            </Button>
-          ) : (
-            <div style={{ display: 'flex', alignItems: 'center', gap: 12 }}>
-              <Button
-                icon={<MinusOutlined />}
-                size="large"
-                onClick={() => {
-                  if (cartCount - 1 === 0) removeFromCart(product.id);
-                  else changeQuantity(product.id, cartCount - 1);
-                }}
-              />
-              <span style={{ minWidth: 32, textAlign: 'center', fontSize: 18 }}>{cartCount}</span>
-              <Button
-                icon={<PlusOutlined />}
-                size="large"
-                onClick={() => changeQuantity(product.id, cartCount + 1)}
-              />
-            </div>
-          )}
-          <Button style={{ marginLeft: 16 }} onClick={() => navigate(-1)}>
+<Button
+  type="primary"
+  size="large"
+  style={{ width: '300px' }}
+  onClick={() => {
+    if (cartCount === 0) {
+      addToCart(product);
+    }
+  }}
+>
+  {cartCount === 0 ? (
+    <span style={{ fontSize: 18 }}>Добавить в корзину</span>
+  ) : (
+    <div style={{ display: 'flex', alignItems: 'center', justifyContent: 'center' }}>
+      <Button
+        icon={<MinusOutlined />}
+        size="small"
+        style={{ background: 'transparent', border: 'none', color: '#fff' }}
+        onClick={(e) => {
+          e.stopPropagation();
+          if (cartCount - 1 === 0) {
+            removeFromCart(product.id);
+          } else {
+            changeQuantity(product.id, cartCount - 1);
+          }
+        }}
+      />
+      <span style={{ minWidth: 32, textAlign: 'center', fontSize: 18 }}>{cartCount}</span>
+      <Button
+        icon={<PlusOutlined />}
+        size="small"
+        style={{ background: 'transparent', border: 'none', color: '#fff' }}
+        onClick={(e) => {
+          e.stopPropagation();
+          changeQuantity(product.id, cartCount + 1);
+        }}
+      />
+    </div>
+  )}
+</Button>
+
+          <Button type='primary' style={{ marginLeft: 16 }} onClick={() => navigate(-1)}>
             Назад
           </Button>
         </div>

@@ -2,6 +2,7 @@ import { Card, Row, Col, Button, Empty, Image } from 'antd';
 import { PlusOutlined, MinusOutlined } from '@ant-design/icons';
 import { useCartStore } from '@store/useCartStore';
 import { useNavigate } from 'react-router-dom';
+import '../global.css'
 
 function CartPage() {
   const { cart, removeFromCart, changeQuantity } = useCartStore();
@@ -12,7 +13,7 @@ function CartPage() {
         <Button type="primary" onClick={() => navigate('/')} style={{ marginBottom: 16 }}>
           Назад на главную
         </Button>
-        <h2>Корзина</h2>
+        <h2 className='title'>Корзина</h2>
         {cart.length === 0 ? (
           <Empty description="Корзина пуста" />
         ) : (

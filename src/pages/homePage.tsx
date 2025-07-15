@@ -1,21 +1,28 @@
-import { Layout } from 'antd'
+import { useParams, useNavigate } from 'react-router-dom';
 import Categories from '@components/categories/categories';
 import Products from '@components/products/products';
-import { useState } from 'react';
-
-const { Content } = Layout
 
 function HomePage() {
-  const [selectedCategory, setSelectedCategory] = useState<string | null>(null);
+  const { slug } = useParams();
+  const navigate = useNavigate();
+
+  const handleCategorySelect = (categorySlug: string | null) => {
+    if (categorySlug) {
+      navigate(`/category/${categorySlug}`);
+    } else {
+      navigate('/');
+    }
+  };
 
   return (
-    <Layout className="layout">
-      <Content>
-        <Categories selectedCategory={selectedCategory} onCategorySelect={setSelectedCategory} />
-        <Products selectedCategory={selectedCategory} />
-      </Content>
-    </Layout>
-  )
+    <>
+      <Categories
+        selectedCategory={slug || null}
+        onCategorySelect={handleCategorySelect}
+      />
+      <Products selectedCategory={slug || null} />
+    </>
+  );
 }
 
 export default HomePage;

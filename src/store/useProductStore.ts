@@ -18,8 +18,7 @@ export const useProductStore = create<ProductState>((set) => ({
   getProducts: async () => {
     set({ loading: true })
     try {
-      const res = await api.get('/products/?limit=0')
-      const data = res.data as { products: Product[] }
+      const {data} = await api.get('/products/?limit=0')
       set({ products: data.products })
     } finally {
       set({ loading: false })

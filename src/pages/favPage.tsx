@@ -2,6 +2,7 @@ import { Card, Row, Col, Button, Empty, Image } from 'antd';
 import { HeartFilled } from '@ant-design/icons';
 import { useFavoritesStore } from '@store/useFavStore';
 import { useNavigate } from 'react-router-dom';
+import '../global.css';
 
 function FavPage() {
   const { favorites, removeFavorite } = useFavoritesStore();
@@ -12,7 +13,7 @@ function FavPage() {
         <Button type="primary" onClick={() => navigate('/')} style={{ marginBottom: 16 }}>
           Назад на главную
         </Button>
-        <h2>Избранное</h2>
+        <h2 className='title'>Избранное</h2>
         {favorites.length === 0 ? (
           <Empty description="Нет избранных товаров" />
         ) : (
