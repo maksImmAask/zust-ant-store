@@ -1,6 +1,7 @@
 import { create } from 'zustand';
 import type { Product } from '../types/types';
 
+
 type FavItem = { product: Product; count: number };
 type FavState = {
   favorites: FavItem[];

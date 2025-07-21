@@ -3,11 +3,11 @@ import { HeartOutlined, HeartFilled, PlusOutlined, MinusOutlined } from '@ant-de
 import { useEffect, useState } from 'react';
 import { useNavigate } from 'react-router-dom';
 import { useAuthStore } from '@store/useLoginStore';
-import styles from './products.module.css';
 import { useProductStore } from '@store/useProductStore';
 import { useCategoryStore } from '@store/useCategoryStore';
 import { useFavoritesStore } from '@store/useFavStore';
 import { useCartStore } from '@store/useCartStore';
+import '../../global.css'
 
 type ProductsProps = {
   selectedCategory: string | null;
@@ -99,13 +99,13 @@ function Products({ selectedCategory }: ProductsProps) {
                           <Image
                             src={product.thumbnail}
                             alt={product.title}
-                            className={styles.product_image}
+                            className='product_image'
                             preview={false}
                           />
                         }
                         title={
                           <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center' }}>
-                            <span className={styles.ant_card_title}>{product.title}</span>
+                            <span className='ant_card_title'>{product.title}</span>
                             <Button
                               type="text"
                               shape="circle"
@@ -137,10 +137,10 @@ function Products({ selectedCategory }: ProductsProps) {
                         className="ant-card"
                         style={{ width: '100%', height: '100%' }}
                       >
-                        <div className={styles.produst_price}>
-                          Цена<h1 className={styles.title}>{product.price}$</h1>
+                        <div className='product_price'>
+                          Цена<h1 className='title'>{product.price}$</h1>
                         </div>
-                        <div className={styles.product_description}>{product.description}</div>
+                        <div className='product_description'>{product.description}</div>
 <Button
   type="primary"
   style={{ width: '100%', margin: '3px' }}
@@ -162,7 +162,7 @@ function Products({ selectedCategory }: ProductsProps) {
   }}
 >
   {cartCount === 0 ? (
-    'В корзину'
+    'Добавить в корзину'
   ) : (
     <div style={{ display: 'flex', alignItems: 'center', justifyContent: 'center', gap: 8 }}>
       <Button

@@ -1,18 +1,15 @@
 import { Card, Row, Col, Button, Empty, Image } from 'antd';
 import { HeartFilled } from '@ant-design/icons';
 import { useFavoritesStore } from '@store/useFavStore';
-import { useNavigate } from 'react-router-dom';
+import BackButton from '@components/backButton/backButton';
 import '../global.css';
 
 function FavPage() {
   const { favorites, removeFavorite } = useFavoritesStore();
-  const navigate = useNavigate();
   return (
     <section style={{ padding: '10px' }}>
       <div className="container">
-        <Button type="primary" onClick={() => navigate('/')} style={{ marginBottom: 16 }}>
-          Назад на главную
-        </Button>
+        <BackButton />
         <h2 className='title'>Избранное</h2>
         {favorites.length === 0 ? (
           <Empty description="Нет избранных товаров" />
@@ -26,7 +23,7 @@ function FavPage() {
                   bodyStyle={{ display: 'flex', alignItems: 'center', gap: 24 }}
                   title={
                     <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center' }}>
-                      <span style={{ fontWeight: 500 }}>{item.product.title}</span>
+                      <span className='title' style={{ fontWeight: 500 }}>{item.product.title}</span>
                       <Button
                         icon={<HeartFilled style={{ color: '#ff4d4f', fontSize: 20 }} />}
                         onClick={() => removeFavorite(item.product.id)}
@@ -53,8 +50,8 @@ function FavPage() {
                     preview={false}
                   />
                   <div style={{ flex: 1 }}>
-                    <div style={{ fontWeight: 500, marginBottom: 8 }}>Цена: ${item.product.price}</div>
-                    <div style={{ color: '#888', marginBottom: 8 }}>{item.product.description}</div>
+                    <div className='product_price' style={{ fontWeight: 500, marginBottom: 8 }}>Цена: ${item.product.price}</div>
+                    <div className='product_description' style={{ color: '#888', marginBottom: 8 }}>{item.product.description}</div>
                   </div>
                 </Card>
               </Col>

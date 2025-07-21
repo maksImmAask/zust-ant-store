@@ -1,14 +1,28 @@
 import { useState } from 'react';
+import { useNavigate } from 'react-router-dom';
 import { Input, Button, Card } from 'antd';
+import { useAuthStore } from '../store/useLoginStore'; 
 
 function SigninPage() {
   const [username, setUsername] = useState('');
   const [password, setPassword] = useState('');
+  const navigate = useNavigate();
   const [email, setEmail] = useState('');
+
+  const register = useAuthStore((state) => state.register);
+  const loading = useAuthStore((state) => state.loading);
+  const error = useAuthStore((state) => state.error);
+
+  const handleRegister = async () => {
+    await register({ username, password, email });
+    if (useAuthStore.getState().isAuthenticated) {
+      navigate('/');
+    }
+  };
 
   return (
     <div style={{ display: 'flex', justifyContent: 'center', alignItems: 'center', minHeight: '80vh' }}>
-      <Card title="Регистрация (макет)" style={{ width: 350 }}>
+      <Card title="Регистрация" style={{ width: 350 }}>
         <Input
           placeholder="Имя пользователя"
           value={username}
@@ -30,10 +44,12 @@ function SigninPage() {
         <Button
           type="primary"
           block
-          disabled={!username || !password || !email}
+          disabled={!username || !password || !email || loading}
+          onClick={handleRegister}
         >
-          Зарегистрироваться
+          {loading ? 'Загрузка...' : 'Зарегистрироваться'}
         </Button>
+        {error && <div style={{ color: 'red', marginTop: 10 }}>{error}</div>}
       </Card>
     </div>
   );

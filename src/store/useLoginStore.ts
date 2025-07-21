@@ -19,12 +19,22 @@ type Credentials = {
   password: string;
 };
 
+type RegistrationData = {
+  username: string;
+  password: string;
+  email?: string;
+  firstName?: string;
+  lastName?: string;
+  gender?: 'male' | 'female';
+};
+
 type AuthState = {
   user: User | null;
   isAuthenticated: boolean;
   loading: boolean;
   error: string | null;
   login: (credentials: Credentials) => Promise<void>;
+  register: (data: RegistrationData) => Promise<void>;
   logout: () => void;
 };
 
@@ -39,7 +49,7 @@ export const useAuthStore = create<AuthState>()(
       login: async ({ username, password }) => {
         set({ loading: true, error: null });
         try {
-          const {data} = await api.post<User>('/auth/login', { username, password });
+          const { data } = await api.post<User>('/auth/login', { username, password });
 
           const user: User = {
             id: data.id,
@@ -49,8 +59,8 @@ export const useAuthStore = create<AuthState>()(
             lastName: data.lastName,
             gender: data.gender,
             image: data.image,
-            accessToken: data.accessToken || null, 
-            refreshToken: '', 
+            accessToken: data.accessToken || null,
+            refreshToken: '',
           };
 
           set({
@@ -58,6 +68,39 @@ export const useAuthStore = create<AuthState>()(
             isAuthenticated: true,
             error: null,
           });
+        } finally {
+          set({ loading: false });
+        }
+      },
+
+      register: async (data) => {
+        set({ loading: true, error: null });
+        try {
+          const response = await api.post<User>('/users/add', data);
+
+          const newUser: User = {
+            id: response.data.id,
+            username: response.data.username,
+            email: response.data.email || '',
+            firstName: response.data.firstName || '',
+            lastName: response.data.lastName || '',
+            gender: response.data.gender || 'male',
+            image: response.data.image || '',
+            accessToken: null,
+            refreshToken: '',
+          };
+
+          set({
+            user: newUser,
+            isAuthenticated: true,
+            error: null,
+          });
+        }  catch (err: unknown) {
+          if (typeof err === 'object' && err !== null && 'message' in err) {
+            set({ error: String((err as Error).message) });
+          } else {
+            set({ error: 'Неизвестная ошибка при регистрации' });
+          }
         } finally {
           set({ loading: false });
         }

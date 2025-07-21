@@ -14,8 +14,8 @@ export const useCategoryStore = create<CategoryState>((set) => ({
   getCategories: async () => {
     set({ loading: true })
     try {
-      const res = await api.get('/products/categories')
-      set({ categories: res.data as Category[] })
+      const {data} = await api.get('/products/categories')
+      set({ categories: data as Category[] })
     } finally {
       set({ loading: false })
     }

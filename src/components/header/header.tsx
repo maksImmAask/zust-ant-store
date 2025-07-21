@@ -2,10 +2,22 @@ import { Row, Col, Button, Avatar, Dropdown, Menu } from 'antd';
 import { ShoppingCartOutlined, ShopOutlined, HeartOutlined, UserOutlined } from '@ant-design/icons';
 import styles from './header.module.css';
 import SearchInput from '../searchInput/search';
-import { useNavigate } from 'react-router-dom';
+import { useNavigate, useParams, useLocation} from 'react-router-dom';
 import { useAuthStore } from '../../store/useLoginStore';
 
+
 function Header() {
+  const location = useLocation();
+  const fromCategory = location.state?.fromCategory;
+
+  const handleClick = () => {
+    if (fromCategory) {
+      navigate(`/category/${fromCategory}`);
+    } else {
+      navigate('/');
+    }
+  };
+  const { slug } = useParams();
   const navigate = useNavigate();
   const { user, isAuthenticated, logout } = useAuthStore();
 
@@ -22,7 +34,7 @@ function Header() {
       <div className="container">
         <Row style={{ width: '100%', height: '100%' }}>
           <Col span={2} className={styles.col}>
-            <Button type='primary' className={styles.logo} onClick={() => navigate('/')} >UStore</Button>
+            <Button type='primary' className={styles.logo} onClick={handleClick} >UStore</Button>
           </Col>
           <Col span={2} className={styles.col} style={{ alignItems: 'center', display: 'flex', justifyContent: 'center' }}>
             <ShopOutlined style={{ color: 'white', fontSize: '30px' }} />
@@ -31,10 +43,10 @@ function Header() {
             <SearchInput />
           </Col>
           <Col span={5} className={styles.col}>
-            <Button type='primary' className={styles.btn} icon={<HeartOutlined />} onClick={() => navigate('/favourites')} >Избранное</Button>
+            <Button type='primary' className={styles.btn} icon={<HeartOutlined />} onClick={() => navigate('/favourites', { state: { fromCategory: slug } })} >Избранное</Button>
           </Col>
           <Col span={2} className={styles.col}>
-            <Button type='primary' icon={<ShoppingCartOutlined />} onClick={() => navigate('/cart')} className={styles.btn}>Корзина</Button>
+            <Button type='primary' icon={<ShoppingCartOutlined />} onClick={() => navigate('/cart', { state: { fromCategory: slug } })} className={styles.btn}>Корзина</Button>
           </Col>
           <Col span={5} className={styles.col} style={{ display: 'flex', alignItems: 'center', gap: 12, justifyContent: 'flex-end' }}>
             {isAuthenticated && user ? (
@@ -62,4 +74,4 @@ function Header() {
   );
 }
 
-export default Header;
+export default Header; 

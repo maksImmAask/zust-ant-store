@@ -1,18 +1,15 @@
 import { Card, Row, Col, Button, Empty, Image } from 'antd';
 import { PlusOutlined, MinusOutlined } from '@ant-design/icons';
 import { useCartStore } from '@store/useCartStore';
-import { useNavigate } from 'react-router-dom';
 import '../global.css'
+import BackButton from '@components/backButton/backButton';
 
 function CartPage() {
   const { cart, removeFromCart, changeQuantity } = useCartStore();
-  const navigate = useNavigate();
   return (
     <section style={{ padding: '10px' }}>
       <div className="container">
-        <Button type="primary" onClick={() => navigate('/')} style={{ marginBottom: 16 }}>
-          Назад на главную
-        </Button>
+        <BackButton />
         <h2 className='title'>Корзина</h2>
         {cart.length === 0 ? (
           <Empty description="Корзина пуста" />
@@ -26,7 +23,7 @@ function CartPage() {
                   bodyStyle={{ display: 'flex', alignItems: 'center', gap: 24 }}
                   title={
                     <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center' }}>
-                      <span style={{ fontWeight: 500 }}>{item.title}</span>
+                      <span className='title' style={{ fontWeight: 500 }}>{item.title}</span>
                       <div style={{ display: 'flex', alignItems: 'center', gap: 4 }}>
                         <Button
                           icon={<MinusOutlined />}
@@ -63,8 +60,8 @@ function CartPage() {
                     preview={false}
                   />
                   <div style={{ flex: 1 }}>
-                    <div style={{ fontWeight: 500, marginBottom: 8 }}>Цена: ${item.price}</div>
-                    <div style={{ color: '#888', marginBottom: 8 }}>{item.description}</div>
+                    <div className='product_price' style={{ fontWeight: 500, marginBottom: 8 }}>Цена: ${item.price}</div>
+                    <div className='product_description' style={{ color: '#888', marginBottom: 8 }}>{item.description}</div>
                   </div>
                 </Card>
               </Col>
