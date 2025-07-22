@@ -9,7 +9,20 @@ function CartPage() {
   return (
     <section style={{ padding: '10px' }}>
       <div className="container">
-        <BackButton />
+        <div style={{
+  display: 'flex',
+  justifyContent: 'space-between',
+  alignItems: 'center',
+  marginBottom: 16
+}}>
+  <BackButton />
+
+  {cart.length > 0 && (
+    <h3 style={{ margin: 0 }}>
+      Итого: ${cart.reduce((acc, item) => acc + item.price * item.quantity, 0).toFixed(2)}
+    </h3>
+  )}
+</div>
         <h2 className='title'>Корзина</h2>
         {cart.length === 0 ? (
           <Empty description="Корзина пуста" />

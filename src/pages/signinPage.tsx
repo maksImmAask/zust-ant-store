@@ -1,20 +1,36 @@
 import { useState } from 'react';
 import { useNavigate } from 'react-router-dom';
 import { Input, Button, Card } from 'antd';
-import { useAuthStore } from '../store/useLoginStore'; 
+import { useAuthStore } from '../store/useLoginStore';
 
 function SigninPage() {
   const [username, setUsername] = useState('');
   const [password, setPassword] = useState('');
-  const navigate = useNavigate();
   const [email, setEmail] = useState('');
+  const [localError, setLocalError] = useState('');
 
+  const navigate = useNavigate();
   const register = useAuthStore((state) => state.register);
   const loading = useAuthStore((state) => state.loading);
   const error = useAuthStore((state) => state.error);
 
   const handleRegister = async () => {
-    await register({ username, password, email });
+    const trimmedUsername = username.trim();
+    const trimmedPassword = password.trim();
+    const trimmedEmail = email.trim();
+
+    if (!trimmedUsername || !trimmedPassword || !trimmedEmail) {
+      setLocalError('Пожалуйста, заполните все поля без пробелов.');
+      return;
+    }
+
+    setLocalError('');
+    await register({
+      username: trimmedUsername,
+      password: trimmedPassword,
+      email: trimmedEmail,
+    });
+
     if (useAuthStore.getState().isAuthenticated) {
       navigate('/');
     }
@@ -44,15 +60,25 @@ function SigninPage() {
         <Button
           type="primary"
           block
-          disabled={!username || !password || !email || loading}
+          disabled={
+            !username.trim() ||
+            !password.trim() ||
+            !email.trim() ||
+            loading
+          }
           onClick={handleRegister}
         >
           {loading ? 'Загрузка...' : 'Зарегистрироваться'}
         </Button>
-        {error && <div style={{ color: 'red', marginTop: 10 }}>{error}</div>}
+        {(error || localError) && (
+          <div style={{ color: 'red', marginTop: 10 }}>
+            {localError || error}
+          </div>
+        )}
       </Card>
     </div>
   );
 }
 
 export default SigninPage;
+

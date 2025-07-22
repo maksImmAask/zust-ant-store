@@ -46,7 +46,15 @@ function Header() {
             <Button type='primary' className={styles.btn} icon={<HeartOutlined />} onClick={() => navigate('/favourites', { state: { fromCategory: slug } })} >Избранное</Button>
           </Col>
           <Col span={2} className={styles.col}>
-            <Button type='primary' icon={<ShoppingCartOutlined />} onClick={() => navigate('/cart', { state: { fromCategory: slug } })} className={styles.btn}>Корзина</Button>
+            <Button type='primary' icon={<ShoppingCartOutlined />}
+             onClick={
+               () => {
+                if (!isAuthenticated) {
+                  navigate('/login');
+                  return;
+                }
+               navigate('/cart', { state: { fromCategory: slug } })
+               }}  className={styles.btn}>Корзина</Button>
           </Col>
           <Col span={5} className={styles.col} style={{ display: 'flex', alignItems: 'center', gap: 12, justifyContent: 'flex-end' }}>
             {isAuthenticated && user ? (
@@ -63,7 +71,10 @@ function Header() {
               </>
             ) : (
               <>
-                <Button className={styles.sign} onClick={() => navigate('/login')} type="primary">Log In</Button>
+                <Button className={styles.sign} onClick={
+                  
+                  () => navigate('/login')
+                  } type="primary">Log In</Button>
                 <Button className={styles.sign} onClick={() => navigate('/signin')} type='primary' >Sign In</Button>
               </>
             )}

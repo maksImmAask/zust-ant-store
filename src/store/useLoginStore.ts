@@ -1,6 +1,7 @@
 import { create } from 'zustand';
 import { persist } from 'zustand/middleware';
 import api from '../api/api';
+import { message } from 'antd';
 
 type User = {
   id: number;
@@ -68,7 +69,12 @@ export const useAuthStore = create<AuthState>()(
             isAuthenticated: true,
             error: null,
           });
-        } finally {
+
+        } catch (err: unknown) {
+          console.log(err);
+          message.error('Ошибка входа. Проверьте данные и попробуйте снова.');
+        }
+         finally {
           set({ loading: false });
         }
       },
@@ -96,11 +102,8 @@ export const useAuthStore = create<AuthState>()(
             error: null,
           });
         }  catch (err: unknown) {
-          if (typeof err === 'object' && err !== null && 'message' in err) {
-            set({ error: String((err as Error).message) });
-          } else {
-            set({ error: 'Неизвестная ошибка при регистрации' });
-          }
+          console.log(err || 'Неизвестная ошибка при входе');
+          
         } finally {
           set({ loading: false });
         }
